@@ -62,7 +62,7 @@ def all_combinations(l):
 
 class Graph(BaseMainGraph):
   _SUPPORT_CLONING = True
-  def __init__(self, filename, clone = None, exclusive = True, sqlite_tmp_dir = "", world = None, profiling = False):
+  def __init__(self, filename, clone = None, exclusive = False, sqlite_tmp_dir = "", world = None, profiling = False):
     exists        = os.path.exists(filename) and os.path.getsize(filename) # BEFORE creating db!
     initialize_db = (clone is None) and ((filename == ":memory:") or (not exists))
     
