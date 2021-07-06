@@ -72,9 +72,12 @@ class Graph(BaseMainGraph):
     if sqlite_tmp_dir: os.environ["SQLITE_TMPDIR"] = sqlite_tmp_dir
     
     if exclusive:
-      self.db = sqlite3.connect(filename, isolation_level = "EXCLUSIVE", check_same_thread = False)
-      self.db.execute("""PRAGMA locking_mode = EXCLUSIVE""")
-      print('{} entered exclusively...'.format(filename))
+      # self.db = sqlite3.connect(filename, isolation_level = "EXCLUSIVE", check_same_thread = False)
+      # self.db.execute("""PRAGMA locking_mode = EXCLUSIVE""")
+      # print('{} entered exclusively...'.format(filename))
+      self.db = sqlite3.connect(filename, check_same_thread = False)
+      self.db.execute("""PRAGMA locking_mode = NORMAL""")
+      print('{} entered non-exclusively!'.format(filename))
     else:
       self.db = sqlite3.connect(filename, check_same_thread = False)
       self.db.execute("""PRAGMA locking_mode = NORMAL""")
