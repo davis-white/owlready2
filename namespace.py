@@ -415,7 +415,7 @@ def _clear_cache():
 
 WORLDS = weakref.WeakSet()
 class World(_GraphManager):
-  def __init__(self, backend = "sqlite", filename = ":memory:", dbname = "owlready2_quadstore", **kargs):
+  def __init__(self, backend = "sqlite", filename = ":memory:", exclusive=True,dbname = "owlready2_quadstore", **kargs):
     global owl_world
     
     self.world            = self
@@ -434,15 +434,15 @@ class World(_GraphManager):
       WORLDS.add(self)
       
     if filename:
-      self.set_backend(backend, filename, dbname, **kargs)
+      self.set_backend(backend, filename, dbname, exclusive, **kargs)
       
-  def set_backend(self, backend = "sqlite", filename = ":memory:", dbname = "owlready2_quadstore", **kargs):
+  def set_backend(self, backend = "sqlite", filename = ":memory:", dbname = "owlready2_quadstore", exclusivity=True,**kargs):
     if   backend == "sqlite":
       from owlready2.triplelite import Graph
       if self.graph and len(self.graph):
-        self.graph = Graph(filename, world = self, clone = self.graph, **kargs)
+        self.graph = Graph(filename, world = self, clone = self.graph, exclusive=exclusivity, **kargs)
       else:
-        self.graph = Graph(filename, world = self, **kargs)
+        self.graph = Graph(filename, world = self, exclusive=exclusivity,**kargs)
     else:
       raise ValueError("Unsupported backend type '%s'!" % backend)
     for method in self.graph.__class__.BASE_METHODS + self.graph.__class__.WORLD_METHODS:
